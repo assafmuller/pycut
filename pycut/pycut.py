@@ -38,12 +38,12 @@ def cut(value, fields, delimiter):
         result = result[:fields[1] + 1]
     elif fields[1] is None:
         result = result[fields[0]:]
-    print(delimiter.join(result))
+    return delimiter.join(result)
 
 
 def main():
     cli_options = get_options()
-    cut(cli_options.value, cli_options.fields, cli_options.delimiter)
+    print(cut(cli_options.value, cli_options.fields, cli_options.delimiter))
     return 0
 
 
