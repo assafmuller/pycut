@@ -12,6 +12,10 @@ def get_options():
     return parser.parse_args()
 
 
+def get_segments(fields):
+    return fields.split(',')
+
+
 def get_fields(fields):
     if '-' not in fields:
         fields = int(fields) - 1
@@ -31,14 +35,18 @@ def get_fields(fields):
 
 
 def cut(value, fields, delimiter):
-    fields = get_fields(fields)
-    result = value.split(delimiter)
-    if fields[0] is not None and fields[1] is not None:
-        result = result[fields[0]:fields[1] + 1]
-    elif fields[0] is None:
-        result = result[:fields[1] + 1]
-    elif fields[1] is None:
-        result = result[fields[0]:]
+    result = []
+    segments = get_segments(fields)
+    for segment in segments:
+        fields = get_fields(segment)
+        segment_result = value.split(delimiter)
+        if fields[0] is not None and fields[1] is not None:
+            segment_result = segment_result[fields[0]:fields[1] + 1]
+        elif fields[0] is None:
+            segment_result = segment_result[:fields[1] + 1]
+        elif fields[1] is None:
+            segment_result = segment_result[fields[0]:]
+        result += segment_result
     return delimiter.join(result).rstrip('\n')
 
 
