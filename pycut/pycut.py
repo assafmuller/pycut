@@ -48,7 +48,7 @@ def main():
         value = file  # files need to be read while stdin is already in strin form
         try:
             value = file.read()
-        except:
+        except Exception:
             pass
         result = cut(value, cli_options.fields, cli_options.delimiter)
         print(result)
