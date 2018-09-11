@@ -39,7 +39,7 @@ def cut(value, fields, delimiter):
         result = result[:fields[1] + 1]
     elif fields[1] is None:
         result = result[fields[0]:]
-    return delimiter.join(result)
+    return delimiter.join(result).rstrip('\n')
 
 
 def main():
@@ -50,7 +50,8 @@ def main():
             value = file.read()
         except:
             pass
-        print(cut(value, cli_options.fields, cli_options.delimiter), end='')
+        result = cut(value, cli_options.fields, cli_options.delimiter)
+        print(result)
     return 0
 
 
