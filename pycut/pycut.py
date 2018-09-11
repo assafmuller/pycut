@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 
 import argparse
+import sys
 
 
 def get_options():
     parser = argparse.ArgumentParser()
     parser.add_argument('-f', '--fields', help='Select only these fields', required=True)
     parser.add_argument('-d', '--delimiter', help='Delimiter. Defaults to tab', default='\t')
-    parser.add_argument('value', help='Standard input')
+    parser.add_argument('files', nargs='?', type=argparse.FileType('r'), default=sys.stdin, help='Files or standard input')
     return parser.parse_args()
 
 
@@ -43,7 +44,10 @@ def cut(value, fields, delimiter):
 
 def main():
     cli_options = get_options()
-    print(cut(cli_options.value, cli_options.fields, cli_options.delimiter))
+    for file in cli_options.files:
+        value = file
+        break
+    print(cut(value, cli_options.fields, cli_options.delimiter), end='')
     return 0
 
 
