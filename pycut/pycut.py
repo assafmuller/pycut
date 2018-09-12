@@ -3,9 +3,34 @@ import sys
 
 
 def get_options():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-f', '--fields', help='Select only these fields', required=True)
-    parser.add_argument('-d', '--delimiter', help='Delimiter. Defaults to tab', default='\t')
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawTextHelpFormatter, description=\
+"""
+pycut is similar to the Unix cut tool. There are several differences:
+1) It implements a small subset of cut's functionality. It only supports
+   the -f and -d arguments.
+2) The delimiter (-d) argument supports strings longer than a single character.
+3) The fields (-f) argument uses the ':' symbol, and not the '-' symbol to to signify ranges. This is because...
+4) The fields (-f) argument supports negative numbers to refer to 2nd/3rd/nth from last field.
+
+Examples:
+* echo "some_file.ini.json.00000" | pycut -f :-1 -d ".json"  # Print all fields before the json substring
+> some_file.ini
+""")
+
+    parser.add_argument('-f', '--fields', required=True, help=\
+"""Select only these fields. For example:
+-f 1      The first field
+-f 2,3    The second and third fields
+-f 1:4    Fields 1 through 4
+-f 2:     Fields 2 to the end
+-f :5     Fields 1 to 5
+-f :-1    Fields 1 to second from last
+-f 1,5:-2 Fields 1 and 5 to third from last""")
+
+    parser.add_argument('-d', '--delimiter', default='\t', help=\
+"""Delimiter. Defaults to tab. Can be a single character or string.""")
+
     parser.add_argument('files', nargs='*', type=argparse.FileType('r'), default=sys.stdin, help='Files or standard input')
     return parser.parse_args()
 
