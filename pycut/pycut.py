@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import argparse
 import sys
 
@@ -61,7 +59,3 @@ def main():
         result = cut(value, cli_options.fields, cli_options.delimiter)
         print(result)
     return 0
-
-
-if __name__ == "__main__":
-    main()
