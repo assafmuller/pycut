@@ -1,22 +1,26 @@
 import argparse
+import re
 import sys
+import pkg_resources
+
+
+def get_doc():
+    with open(pkg_resources.resource_filename(__name__, 'README.md')) as usage_file:
+        usage = usage_file.read()
+
+    # Strip out code block markdown instructions
+    usage = usage.replace('```\n', '')
+
+    # Strip out image markdown instructions
+    usage = re.sub('\!\[.*', '', usage)
+
+    return usage
 
 
 def get_options():
+    readme = get_doc()
     parser = argparse.ArgumentParser(
-        formatter_class=argparse.RawTextHelpFormatter, description=\
-"""
-pycut is similar to the Unix cut tool. There are several differences:
-1) It implements a small subset of cut's functionality. It only supports
-   the -f and -d arguments.
-2) The delimiter (-d) argument supports strings longer than a single character.
-3) The fields (-f) argument uses the ':' symbol, and not the '-' symbol to to signify ranges. This is because...
-4) The fields (-f) argument supports negative numbers to refer to 2nd/3rd/nth from last field.
-
-Examples:
-* echo "some_file.ini.json.00000" | pycut -f :-1 -d ".json"  # Print all fields before the json substring
-> some_file.ini
-""")
+        formatter_class=argparse.RawTextHelpFormatter, description=readme)
 
     parser.add_argument('-f', '--fields', required=True, help=\
 """Select only these fields. For example:
