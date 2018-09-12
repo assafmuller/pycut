@@ -17,11 +17,11 @@ def get_segments(fields):
 
 
 def get_fields(fields):
-    if '-' not in fields:
+    if ':' not in fields:
         fields = int(fields) - 1
         return fields, fields
 
-    result = fields.split('-')
+    result = fields.split(':')
     if result[0] == '':
         result[0] = None
     else:
