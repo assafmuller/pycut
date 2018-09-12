@@ -32,6 +32,13 @@ class PycutTestCase(tests_base.BaseTestCase):
 
         self.assertEqual('some_file.ini.json', pycut.cut(value, '1:-1', delimiter))
 
+    def test_open_field_range(self):
+        value = 'some_file.ini.json.00000'
+        delimiter = '.'
+
+        self.assertEqual('ini.json.00000', pycut.cut(value, '2:', delimiter))
+        self.assertEqual('some_file.ini', pycut.cut(value, ':2', delimiter))
+
     def test_open_field_range_negative(self):
         value = 'some_file.ini.json.00000'
         delimiter = '.'
